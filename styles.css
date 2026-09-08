@@ -1,0 +1,461 @@
+/* ============================================================
+   Rainier E. Inoc — Portfolio
+   Palette: Dark Aubergine #2E0F35 · Electric Pink #FF7FEC
+   ============================================================ */
+
+/* ================= TOKENS ================= */
+:root{
+  --aubergine:#2E0F35;
+  --surface:#3A1644;
+  --line:rgba(255,255,255,.10);
+  --pink:#FF7FEC;
+  --pink-soft:rgba(255,127,236,.12);
+  --pink-border:rgba(255,127,236,.38);
+  --text:#F9EFFB;
+  --text-soft:#E6D2EE;
+  --muted:#D8BDE3;
+  --radius-lg:24px;
+  --radius-md:16px;
+  --shadow:0 14px 40px rgba(0,0,0,.35);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --gap:24px;   /* single source of truth for card spacing */
+}
+
+/* ================= BASE ================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{overflow-x:clip}   /* safety net against horizontal scroll on mobile */
+body{
+  font-family:'Poppins',system-ui,sans-serif;
+  background:var(--aubergine);
+  color:var(--text);
+  font-size:1.125rem;          /* 18px base — comfortable for low-vision & elderly users */
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+/* ambient glow backdrop */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(600px 400px at 85% 8%, rgba(255,127,236,.09), transparent 60%),
+    radial-gradient(520px 420px at 4% 92%, rgba(255,127,236,.07), transparent 60%);
+}
+img{max-width:100%;display:block}
+::selection{background:var(--pink);color:var(--aubergine)}
+:focus-visible{outline:3px solid var(--pink);outline-offset:3px;border-radius:6px}
+section{scroll-margin-top:24px}
+
+.skip-link{
+  position:absolute;left:-999px;top:10px;z-index:100;
+  background:var(--pink);color:var(--aubergine);
+  padding:10px 18px;border-radius:10px;font-weight:600;text-decoration:none;
+}
+.skip-link:focus{left:10px}
+
+/* ================= LAYOUT — full page width ================= */
+.shell{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:clamp(260px,22vw,320px) minmax(0,1fr);
+  gap:var(--gap);
+  width:100%;                 /* fills the entire viewport — no max-width cap */
+  padding:var(--gap);
+  align-items:start;
+}
+
+/* main column: even spacing between EVERY card */
+main{
+  display:flex;flex-direction:column;
+  gap:var(--gap);
+  min-width:0;                /* prevents grid blowout from wide children */
+}
+
+/* ================= SIDEBAR — stretches top to bottom ================= */
+.sidebar{
+  position:sticky;top:var(--gap);
+  min-height:calc(100vh - (var(--gap) * 2));
+  min-height:calc(100dvh - (var(--gap) * 2));
+  max-height:calc(100vh - (var(--gap) * 2));
+  max-height:calc(100dvh - (var(--gap) * 2));
+  overflow:auto;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:28px 22px;
+  display:flex;flex-direction:column;gap:20px;box-shadow:var(--shadow);
+}
+
+/* Mobile-only header row + hamburger: hidden on desktop */
+.sidebar-top,
+.menu-toggle{display:none}
+.avatar-sm{
+  width:44px;height:44px;font-size:1.05rem;margin:0;
+  border-width:2px;box-shadow:0 0 0 4px var(--pink-soft);
+}
+
+.profile{text-align:left}
+.avatar{
+  width:112px;height:112px;margin:0 0 14px;border-radius:50%;
+  display:grid;place-items:center;
+  font-weight:700;font-size:1.9rem;letter-spacing:1px;color:var(--aubergine);
+  background:linear-gradient(135deg,var(--pink),#FFC9F4);
+  border:3px solid rgba(255,255,255,.25);
+  box-shadow:0 0 0 6px var(--pink-soft);
+}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-name{font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.profile-role{color:var(--muted);font-size:.98rem}
+/* Facebook-style verified check badge next to the name */
+.verified{
+  flex:0 0 auto;width:1.25em;height:1.25em;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:#1877F2;color:#fff;font-size:.85em;
+  box-shadow:0 0 0 2px var(--surface);
+}
+.verified i{font-size:.85em}
+.availability{
+  display:inline-flex;align-items:center;gap:8px;
+  align-self:flex-start;
+  font-size:.92rem;font-weight:500;color:var(--pink);
+  background:var(--pink-soft);border:1px solid var(--pink-border);
+  padding:6px 14px;border-radius:999px;
+}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--pink);animation:pulse 2s infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,127,236,.5)}
+  70%{box-shadow:0 0 0 8px rgba(255,127,236,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,127,236,0)}
+}
+
+.socials{display:flex;justify-content:flex-start;gap:10px}
+.socials a{
+  width:44px;height:44px;display:grid;place-items:center;border-radius:50%;
+  background:var(--aubergine);border:1px solid var(--line);
+  color:var(--muted);font-size:1.3rem;text-decoration:none;
+  transition:transform .25s var(--ease),background .25s var(--ease),color .25s var(--ease);
+}
+.socials a:hover{background:var(--pink);color:var(--aubergine);transform:translateY(-3px)}
+
+.divider{border:none;height:1px;background:var(--line)}
+
+.nav{list-style:none;display:flex;flex-direction:column;gap:6px}
+.nav-link{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-radius:14px;text-decoration:none;
+  color:var(--muted);font-size:1.0625rem;font-weight:500;
+  border:1px solid transparent;   /* reserve space so the active border doesn't shift layout */
+  transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+}
+.nav-link i{font-size:1.35rem}
+.nav-link:hover{background:rgba(255,127,236,.08);color:var(--text)}
+/* Active state matches the card design language:
+   soft pink fill + pink border + pink text (same as .card-icon / .chips / .availability) */
+.nav-link.active{
+  background:var(--pink-soft);
+  border-color:var(--pink-border);
+  color:var(--pink);
+  font-weight:600;
+}
+
+.sidebar-footer{margin-top:auto;text-align:center;color:var(--muted);font-size:.88rem;line-height:1.55}
+
+/* ================= CARDS ================= */
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:32px;box-shadow:var(--shadow);
+}
+.lift{transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)}
+.lift:hover{transform:translateY(-4px);border-color:var(--pink-border);box-shadow:0 18px 44px rgba(0,0,0,.4)}
+
+.card-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px}
+.card-icon{
+  flex:0 0 auto;width:52px;height:52px;border-radius:14px;
+  display:grid;place-items:center;font-size:1.6rem;
+  background:var(--pink-soft);border:1px solid var(--pink-border);color:var(--pink);
+}
+.card-head h2{font-size:1.3rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;line-height:1.3}
+.card-head p{color:var(--muted);font-size:1rem;margin-top:2px}
+
+/* ================= HERO ================= */
+.hero{padding:48px}
+.eyebrow{
+  display:inline-block;color:var(--pink);font-weight:600;
+  text-transform:uppercase;letter-spacing:.14em;font-size:.92rem;margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(2.4rem,4.5vw,3.9rem);
+  line-height:1.12;font-weight:800;letter-spacing:-.01em;margin-bottom:18px;
+}
+.gradient-text{
+  background:linear-gradient(100deg,var(--pink) 20%,#FFC9F4 80%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lead{max-width:62ch;color:var(--muted);font-size:1.15rem;margin-bottom:26px}
+.lead strong{color:var(--text)}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.cta-row.center{justify-content:center}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 26px;border-radius:999px;text-decoration:none;
+  font-weight:600;font-size:1.02rem;border:1px solid transparent;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease);
+}
+.btn-primary{background:var(--pink);color:var(--aubergine)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,127,236,.4)}
+.btn-ghost{border-color:var(--pink-border);color:var(--pink)}
+.btn-ghost:hover{background:var(--pink-soft);transform:translateY(-2px)}
+
+/* ================= TOOLS MARQUEE ================= */
+.marquee{display:flex;align-items:center;gap:28px;padding:22px 28px}
+.marquee-label{flex:0 0 auto;border-right:1px solid var(--line);padding-right:28px}
+.marquee-label span{
+  display:block;color:var(--pink);font-size:.82rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.16em;
+}
+.marquee-label strong{font-size:1.25rem;font-weight:700}
+.marquee-viewport{
+  overflow:hidden;flex:1;min-width:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+}
+.marquee-track{display:flex;width:max-content;animation:marquee 26s linear infinite}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.tool-set{display:flex;align-items:center;list-style:none}
+.tool-set li{
+  display:flex;align-items:center;gap:10px;margin-right:56px;
+  white-space:nowrap;font-weight:600;font-size:1.08rem;
+}
+.tool-set i{color:var(--pink);font-size:1.45rem}
+
+/* ================= WORKS ================= */
+.works-grid{display:grid;grid-template-columns:2fr 1fr;gap:var(--gap)}
+.project-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.project{
+  position:relative;display:block;text-decoration:none;overflow:hidden;
+  background:var(--aubergine);border:1px solid var(--line);border-radius:var(--radius-md);
+  transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease);
+}
+.project:hover{transform:translateY(-5px);border-color:var(--pink-border);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.thumb{
+  position:relative;           /* anchors the project image overlay */
+  height:240px;display:grid;place-items:center;font-size:3rem;color:rgba(255,255,255,.9);
+}
+.t1{background:linear-gradient(135deg,#5A2166,#FF7FEC)}
+.t2{background:linear-gradient(135deg,#2E0F35,#8A4A9E)}
+.t3{background:linear-gradient(135deg,#FF7FEC,#FFC9F4)}
+.t3 i{color:var(--aubergine)}
+.t4{background:linear-gradient(135deg,#472A52,#B15CC4)}
+/* Real project images show fully — no cropping (placeholder gradient shows behind) */
+.thumb i{position:absolute;inset:0;display:grid;place-items:center}   /* placeholder icon behind the image */
+.thumb img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;          /* whole image visible at a compact card height */
+  transition:transform .5s var(--ease);
+}
+.project:hover .thumb img,
+.project:focus-visible .thumb img{transform:scale(1.06)}   /* subtle zoom on hover */
+.project-meta{padding:16px 18px 18px}
+.project-meta h3{font-size:1.08rem;font-weight:600;margin-bottom:4px}
+.project-meta p{color:var(--muted);font-size:.95rem}
+.arrow{
+  position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;color:var(--pink);
+  background:rgba(46,15,53,.6);backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .3s var(--ease);
+}
+.project:hover .arrow,.project:focus-visible .arrow{opacity:1}
+
+.service-list{list-style:none}
+.service-list li{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 4px;border-bottom:1px solid var(--line);font-weight:500;
+}
+.service-list li:last-child{border-bottom:none}
+.service-list i{color:var(--pink);font-size:1.4rem;flex:0 0 auto;transition:transform .25s var(--ease)}
+.service-list li:hover i{transform:scale(1.2)}
+.num{margin-left:auto;color:var(--muted);font-weight:600;font-size:.95rem}
+
+/* ================= ABOUT ================= */
+.about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--gap)}
+.about-card p{color:var(--text-soft);margin-bottom:14px}
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.chips li{
+  background:var(--pink-soft);border:1px solid var(--pink-border);
+  color:var(--pink);padding:7px 16px;border-radius:999px;
+  font-size:.95rem;font-weight:500;
+}
+
+.cred-list{list-style:none;display:flex;flex-direction:column;gap:16px}
+.cred-list li{display:flex;gap:14px;align-items:flex-start}
+.cred-list i{
+  color:var(--pink);font-size:1.5rem;flex:0 0 auto;
+  background:var(--pink-soft);border-radius:12px;padding:10px;
+}
+.cred-list strong{display:block;font-weight:600;line-height:1.4}
+.cred-list span{color:var(--muted);font-size:.95rem}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;margin-top:20px;
+  background:var(--pink);color:var(--aubergine);
+  font-weight:600;font-size:.95rem;padding:8px 18px;border-radius:999px;
+}
+
+/* ================= CONTACT / FOOTER ================= */
+.contact-card{text-align:center;padding:56px 32px}
+.contact-card h2{
+  font-size:clamp(1.9rem,3.2vw,2.8rem);
+  font-weight:800;line-height:1.2;margin-bottom:14px;
+}
+.contact-card .lead{margin:0 auto 28px}
+
+.site-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.95rem;padding:4px 8px 10px;
+}
+.top-link{display:inline-flex;align-items:center;gap:6px;color:var(--pink);text-decoration:none;font-weight:500}
+.top-link:hover{text-decoration:underline}
+
+/* ================= REVEAL ANIMATION =================
+   Scoped under .js so content stays visible if JavaScript is off */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal.visible{opacity:1;transform:none}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Medium screens: stack the inner 2-column grids */
+@media (max-width:1200px){
+  .works-grid,.about-grid{grid-template-columns:1fr}
+}
+
+/* Tablet & below: sidebar becomes a sticky top bar with hamburger menu */
+@media (max-width:920px){
+  .shell{grid-template-columns:1fr}
+
+  /* Sections need extra scroll-margin so anchors land below the sticky bar */
+  section{scroll-margin-top:90px}
+
+  .sidebar{
+    position:sticky;top:12px;z-index:50;
+    min-height:0;max-height:none;overflow:visible;
+    flex-direction:column;gap:0;
+    padding:12px 16px;
+  }
+  .sidebar.nav-open{box-shadow:0 18px 44px rgba(0,0,0,.5)}
+
+  /* Hide desktop-only sidebar pieces */
+  .profile,.divider,.sidebar-footer{display:none}
+
+  /* Compact header row: small avatar + name left, hamburger right */
+  .sidebar-top{display:flex;align-items:center;gap:12px;padding:4px 0}
+  .brand-text{display:flex;flex-direction:column;line-height:1.35;min-width:0}
+  .brand-text .profile-name{font-size:1.02rem}
+  .brand-text .profile-role{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* Hamburger button — top-right */
+  .menu-toggle{
+    display:grid;place-items:center;
+    margin-left:auto;flex:0 0 auto;
+    width:48px;height:48px;border-radius:14px;
+    background:var(--pink-soft);border:1px solid var(--pink-border);
+    color:var(--pink);font-size:1.5rem;cursor:pointer;
+    transition:background .25s var(--ease),transform .25s var(--ease);
+  }
+  .menu-toggle:hover{background:rgba(255,127,236,.2)}
+  .menu-toggle:active{transform:scale(.94)}
+
+  /* Dropdown panel — collapsed until .nav-open is set by JS */
+  .nav-wrap,.socials,.availability{display:none}
+  .sidebar.nav-open .nav-wrap{display:block;width:100%;animation:menuDrop .28s var(--ease)}
+  .sidebar.nav-open .availability{display:inline-flex;align-self:flex-start;margin:16px 0 2px;animation:menuDrop .28s var(--ease)}
+  .sidebar.nav-open .socials{
+    display:flex;justify-content:flex-start;width:100%;
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
+    animation:menuDrop .28s var(--ease);
+  }
+
+  /* Dropdown nav: stacked full-width tap targets */
+  .nav{display:grid;grid-template-columns:1fr;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .nav-link{justify-content:flex-start;padding:14px 16px}
+
+  .marquee{flex-direction:column;align-items:stretch;gap:16px}
+  .marquee-label{border-right:none;border-bottom:1px solid var(--line);padding:0 0 12px;text-align:center}
+}
+
+@keyframes menuDrop{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:none}
+}
+
+/* Phones */
+@media (max-width:600px){
+  :root{--gap:16px}                 /* tighter spacing everywhere, automatically */
+  .card{padding:22px 18px;border-radius:18px}
+  .sidebar{padding:10px 14px;top:8px}
+  .hero{padding:30px 20px}
+  .hero h1{font-size:clamp(1.9rem,9vw,2.4rem)}   /* keeps the headline on 2 lines on small phones */
+  .project-grid{grid-template-columns:1fr}
+  .lightbox{padding:16px}
+  .contact-card{padding:40px 20px}
+  .cta-row .btn{flex:1 1 100%;justify-content:center}   /* full-width buttons, easy to tap */
+  .tool-set li{margin-right:36px;font-size:1rem}
+  .site-footer{justify-content:center;text-align:center}
+}
+
+/* Very small phones */
+@media (max-width:380px){
+  body{font-size:1.0625rem}         /* 17px so text never feels cramped */
+  .brand-text .profile-role{display:none}   /* keeps the top bar on one line on tiny screens */
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+  .reveal{opacity:1;transform:none}
+
+  /* Marquee: auto-scroll stops (motion trigger), but the tools stay fully
+     reachable — the row becomes a normal horizontal scroll area instead. */
+  .marquee-track{animation:none;transform:none}
+  .marquee-viewport{
+    overflow-x:auto;
+    -webkit-mask-image:none;mask-image:none;   /* remove the faded edges */
+    scrollbar-width:thin;
+    scrollbar-color:var(--pink-border) transparent;
+  }
+  .marquee-viewport::-webkit-scrollbar{height:6px}
+  .marquee-viewport::-webkit-scrollbar-thumb{background:var(--pink-border);border-radius:999px}
+}
+
+/* ================= LIGHTBOX (full-image popup) ================= */
+.lightbox{
+  position:fixed;inset:0;z-index:1000;
+  display:grid;place-items:center;padding:32px;
+  background:rgba(20,6,26,.88);backdrop-filter:blur(6px);
+}
+.lightbox[hidden]{display:none}
+.lightbox-figure{
+  margin:0;max-width:min(820px,100%);max-height:100%;
+  display:flex;flex-direction:column;gap:12px;
+}
+.lightbox-img{
+  width:100%;height:auto;max-height:calc(100vh - 130px);
+  object-fit:contain;          /* full image always visible, never cropped */
+  border-radius:var(--radius-md);border:1px solid var(--pink-border);
+  box-shadow:0 24px 60px rgba(0,0,0,.55);
+}
+.lightbox-caption{color:var(--muted);text-align:center;font-size:.95rem}
+.lightbox-close{
+  position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--line);cursor:pointer;
+  background:rgba(46,15,53,.75);color:var(--pink);
+  font-size:1.25rem;display:grid;place-items:center;
+  transition:transform .2s var(--ease),border-color .2s var(--ease);
+}
+.lightbox-close:hover{transform:scale(1.08);border-color:var(--pink-border)}
